@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animated_listview/animated_listview.dart';
+import 'package:vector_math/vector_math_64.dart';
 
 void main() {
   runApp(MyApp());
@@ -35,42 +36,73 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   final animatedListViewBuilders = <AnimatedItemBuilder>[
-    /// a demo builder
-    (BuildContext context, int index, double aniValue) {
+        (BuildContext context, int index, double aniValue) {
       Size ss = MediaQuery.of(context).size;
-      double scl = 0 + 1 * aniValue;
-      double trl = (index % 2 * 2 - 1) * ss.width * 0.5 * (1.0 - aniValue);
-      return Opacity(
-        //key: PageStorageKey<MediaItem>(widget.entry),
-        opacity: aniValue.clamp(0.0, 1.0),
-        child: Center(
+      double scl = 3- 2 * aniValue;
+      double trx = (index % 2 * 2 - 1) * ss.width * 0.5 * (1.0 - aniValue);
+
+      return Transform(
+        transform: Matrix4.identity()
+          ..setEntry(3, 2, 0.001) // perspective
+
+          ..translate(trx,0, 0)..scale(scl)
+        ,
+        alignment: Alignment.center,
+        child: Opacity(
+          //key: PageStorageKey<MediaItem>(widget.entry),
+          opacity: aniValue.clamp(0.0, 1.0),
           child: Container(
-            height: 50,
+            height: 32,
             padding: EdgeInsets.all(2),
-            transform: Matrix4.translationValues(
-                  trl,
-                  0,
-                  0, //(widget.idx%2 *2-1)*ss.width*5.5*(1.0-aniVal)
-                ) *
-                Matrix4.diagonal3Values(scl, scl, 1),
-            child: RaisedButton(
-              highlightColor:
-                  HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.8).toColor(),
-              shape: BeveledRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
-              color:
-                  HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
-              child: Text(
-                  "Id=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
-              onPressed: () {},
+            alignment: Alignment.center,
+            child: Container(
+              height: 28,
+              child: RaisedButton(
+                highlightColor:
+                HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.8).toColor(),
+                shape: BeveledRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+                color:
+                HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
+                child: Text(
+                    "ITEM ID=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
+                onPressed: () {},
+              ),
             ),
           ),
         ),
       );
     },
 
-    /// another demo builder
-    (BuildContext context, int index, double aniValue) {
+        (BuildContext context, int index, double aniValue) {
+      Size ss = MediaQuery.of(context).size;
+      double scl = 0 + 1 * aniValue;
+      double trl =  ss.width * 1 * (1.0 - aniValue);
+      double roY = radians(-90*(1.0-aniValue));
+      return Transform(
+        transform: Matrix4.identity()
+          ..setEntry(3, 2, 0.001) // perspective
+          ..rotateY(roY),
+        //alignment: Alignment.center,
+        child: Container(
+          height: 50,
+          padding: EdgeInsets.all(2),
+
+
+          child: RaisedButton(
+            highlightColor:
+            HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.8).toColor(),
+            color:
+            HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
+            child: Text(
+                "ITEM ID=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
+            onPressed: () {},
+          ),
+        ),
+      );
+    },
+
+        (BuildContext context, int index, double aniValue) {
       Size ss = MediaQuery.of(context).size;
       double scl = 0 + 1 * aniValue;
       double trl = ss.width * 0.5 * (1.0 - aniValue);
@@ -81,22 +113,27 @@ class _MyHomePageState extends State<MyHomePage> {
           height: 50,
           padding: EdgeInsets.all(1),
           transform: Matrix4.translationValues(
-                trl,
-                0,
-                0, //(widget.idx%2 *2-1)*ss.width*5.5*(1.0-aniVal)
-              ) *
+            trl,
+            0,
+            0, //(widget.idx%2 *2-1)*ss.width*5.5*(1.0-aniVal)
+          ) *
               Matrix4.diagonal3Values(scl, scl, 1),
           child: RaisedButton(
             highlightColor:
-                HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.8).toColor(),
-           // color:                HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
+            HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.8).toColor(),
+            // color:                HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
             child: Text(
-                "Id=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
+                "ITEM ID=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
             onPressed: () {},
           ),
         ),
       );
     },
+
+
+
+
+
   ];
 
   int curALV = 0;
@@ -111,7 +148,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: _alv = AnimatedListView(
         key: new ObjectKey(curALV),
         aniItemBuilder: animatedListViewBuilders[curALV % animatedListViewBuilders.length],
+
         itemCount: 100,
+        aniDurMs: 750,
+        aniIntervalMs: 33,
+        //aniCurve: Curves.easeOutBack,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
