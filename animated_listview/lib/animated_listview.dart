@@ -6,7 +6,7 @@
 library animated_listview;
 
 import 'package:flutter/material.dart';
-import 'package:vector_math/vector_math_64.dart' show Matrix4;
+
 
 void dbgPrint(String message, {int wrapWidthParam}) {
   assert((){debugPrint(message,wrapWidth:wrapWidthParam);return true;}());

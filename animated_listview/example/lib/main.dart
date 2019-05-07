@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   AnimatedListView _alv;
   void _incrementCounter() {
     setState(() {
-      curALV = (curALV + 1) % animatedListViewBuilders.length;
+      curALV = (curALV + 1);
     });
   }
 
@@ -77,32 +77,28 @@ class _MyHomePageState extends State<MyHomePage> {
       return Opacity(
         //key: PageStorageKey<MediaItem>(widget.entry),
         opacity: aniValue.clamp(0.0, 1.0),
-        child: Center(
-          child: Container(
-            height: 50,
-            padding: EdgeInsets.all(2),
-            transform: Matrix4.translationValues(
-                  trl,
-                  0,
-                  0, //(widget.idx%2 *2-1)*ss.width*5.5*(1.0-aniVal)
-                ) *
-                Matrix4.diagonal3Values(scl, scl, 1),
-            child: RaisedButton(
-              highlightColor:
-                  HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.8).toColor(),
-              shape: BeveledRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
-              color:
-                  HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
-              child: Text(
-                  "Id=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
-              onPressed: () {},
-            ),
+        child: Container(
+          height: 50,
+          padding: EdgeInsets.all(1),
+          transform: Matrix4.translationValues(
+                trl,
+                0,
+                0, //(widget.idx%2 *2-1)*ss.width*5.5*(1.0-aniVal)
+              ) *
+              Matrix4.diagonal3Values(scl, scl, 1),
+          child: RaisedButton(
+            highlightColor:
+                HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.8).toColor(),
+           // color:                HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
+            child: Text(
+                "Id=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
+            onPressed: () {},
           ),
         ),
       );
     },
   ];
+
   int curALV = 0;
   @override
   Widget build(BuildContext context) {
@@ -114,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: _alv = AnimatedListView(
         key: new ObjectKey(curALV),
-        aniItemBuilder: animatedListViewBuilders[curALV],
+        aniItemBuilder: animatedListViewBuilders[curALV % animatedListViewBuilders.length],
         itemCount: 100,
       ),
       floatingActionButton: FloatingActionButton(
