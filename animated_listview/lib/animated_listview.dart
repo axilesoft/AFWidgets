@@ -8,14 +8,14 @@ library animated_listview;
 import 'package:flutter/material.dart';
 
 
-void dbgPrint(String message, {int wrapWidthParam}) {
+void _dbgPrint(String message, {int wrapWidthParam}) {
   assert((){debugPrint(message,wrapWidth:wrapWidthParam);return true;}());
 }
 
 typedef AnimatedItemBuilder = Widget Function(
     BuildContext context,
     int index,            /// item index
-    double aniValue,      /// Animation value (from 0 to 1)
+    Animation animation,      /// Animation
     );
 
 
@@ -54,7 +54,6 @@ class AnimatedListView extends StatefulWidget {
 
 class _AnimatedListViewState extends State<AnimatedListView>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
 
   ListView _listView;
   ScrollController sclCtlr;
@@ -66,10 +65,10 @@ class _AnimatedListViewState extends State<AnimatedListView>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this);
+
     sclCtlr = ScrollController()
       ..addListener(() {
-        //dbgPrint('scroll pos=${_sclCtlr.offset/50} ofs=${_sclCtlr.offset}');
+        //_dbgPrint('scroll pos=${_sclCtlr.offset/50} ofs=${_sclCtlr.offset}');
       });
 
 
@@ -79,7 +78,7 @@ class _AnimatedListViewState extends State<AnimatedListView>
 
   @override
   void dispose() {
-    _controller.dispose();
+
     super.dispose();
   }
 
@@ -91,7 +90,7 @@ class _AnimatedListViewState extends State<AnimatedListView>
     return Container(
       child: _listView = ListView.builder(
         itemBuilder: (BuildContext context, int index) {
-          dbgPrint('build $index');
+          _dbgPrint('build $index');
           if (DateTime.now().difference(lvBuildTime) >
               Duration(milliseconds: widget.aniDurMs)) firstShow = false;
           return LvAniItem(//PageStorageKey<T>(getItem(index)),
@@ -99,6 +98,7 @@ class _AnimatedListViewState extends State<AnimatedListView>
         },
         itemCount: widget.itemCount,
         controller: sclCtlr,
+
       ),
     );
   }
@@ -108,7 +108,7 @@ class LvAniItem extends StatefulWidget {
   LvAniItem(
       //this.key,
       this.idx, this.durMs, this.intvMs, this.aniCurve, this.lv,this.cbCreateItem){
-    dbgPrint('LvItem Widget create $idx');
+    _dbgPrint('LvItem Widget create $idx');
   }
 
   final AnimatedItemBuilder cbCreateItem;
@@ -134,7 +134,7 @@ class _LvAniItemState extends State<LvAniItem>
   bool firstShow = true;
   int buildCount = 0;
   _LvAniItemState(int idx){
-    dbgPrint('LvItem State create $idx');
+    _dbgPrint('LvItem State create $idx');
   }
   int _aniIdx;
 
@@ -147,7 +147,7 @@ class _LvAniItemState extends State<LvAniItem>
 //      double itemBeg = widget.lv.sclCtlr.offset / 50;
 //      double itemEnd = (widget.lv.sclCtlr.offset +
 //          widget.lv.sclCtlr.position.viewportDimension) / 50;
-//      dbgPrint('LvItem initState idx:${widget.idx}  $itemBeg->$itemEnd');
+//      _dbgPrint('LvItem initState idx:${widget.idx}  $itemBeg->$itemEnd');
 //    }
 
     _aniIdx = (widget.lv.aniId++).clamp(0, 32);
@@ -166,7 +166,7 @@ class _LvAniItemState extends State<LvAniItem>
       //autoInterval(0,0.0,Curves.easeOutBack)
     ));
     _ani.addListener(() {
-      //dbgPrint('LvItem Listener idx:${widget.idx}  b.$buildCount');
+      //_dbgPrint('LvItem Listener idx:${widget.idx}  b.$buildCount');
       setState(() {});
     });
 
@@ -184,11 +184,10 @@ class _LvAniItemState extends State<LvAniItem>
   @override
   Widget build(BuildContext context) {
     buildCount++;
-    // dbgPrint('LvItem build idx:${widget.idx}  b.$buildCount');
+    // _dbgPrint('LvItem build idx:${widget.idx}  b.$buildCount');
     // if (!_aniCtl.isAnimating) _aniCtl.forward();
-    double aniVal = _ani.value;//firstShow && _ani != null ? _ani.value : 1.0;
 
-    return widget.cbCreateItem(context,widget.idx, aniVal);
+    return widget.cbCreateItem(context,widget.idx, _ani);
   }
 
 

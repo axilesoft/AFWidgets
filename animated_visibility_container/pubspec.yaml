@@ -1,5 +1,5 @@
-name: animated_listview
-description: A listview widget with item animation
+name: animated_visibility_container
+description: A visibility animation container widget 
 version: 0.0.1
 author: Axilesoft <axilesoft@gmail.com>
 homepage: https://github.com/axilesoft/AFWidgets/
@@ -16,7 +16,6 @@ dev_dependencies:
     sdk: flutter
   example:
     path: example
-
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
 
@@ -53,4 +52,3 @@ flutter:
   #
   # For details regarding fonts in packages, see
   # https://flutter.dev/custom-fonts/#from-packages
-

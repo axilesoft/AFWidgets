@@ -36,7 +36,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   final animatedListViewBuilders = <AnimatedItemBuilder>[
-        (BuildContext context, int index, double aniValue) {
+        (BuildContext context, int index,Animation ani) {
+      double aniValue=ani.value;
       Size ss = MediaQuery.of(context).size;
       double scl = 3- 2 * aniValue;
       double trx = (index % 2 * 2 - 1) * ss.width * 0.5 * (1.0 - aniValue);
@@ -64,8 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     borderRadius: BorderRadius.circular(8)),
                 color:
                 HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
-                child: Text(
-                    "ITEM ID=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
+                child: TestWidget(index),//Text(                   "ITEM ID=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
                 onPressed: () {},
               ),
             ),
@@ -74,7 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     },
 
-        (BuildContext context, int index, double aniValue) {
+        (BuildContext context, int index, Animation ani) {
+      double aniValue=ani.value;
       Size ss = MediaQuery.of(context).size;
       double scl = 0 + 1 * aniValue;
       double trl =  ss.width * 1 * (1.0 - aniValue);
@@ -102,7 +103,8 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     },
 
-        (BuildContext context, int index, double aniValue) {
+        (BuildContext context, int index,Animation ani) {
+      double aniValue=ani.value;
       Size ss = MediaQuery.of(context).size;
       double scl = 0 + 1 * aniValue;
       double trl = ss.width * 0.5 * (1.0 - aniValue);
@@ -137,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   int curALV = 0;
+  List<int> li= List<int>.generate(1000,(index)=>index);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,5 +163,38 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.refresh),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+class TestWidget extends StatefulWidget {
+  final int id;
+  TestWidget(this.id);
+
+  @override
+  _TestWidgetState createState() =>  _TestWidgetState();
+
+
+}
+
+class _TestWidgetState extends State<TestWidget> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('${widget.id}'),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    dbgPrint('+ ${widget.id}');
+  }
+
+  @override
+  void dispose() {
+    dbgPrint('- ${widget.id}');
+    super.dispose();
   }
 }
