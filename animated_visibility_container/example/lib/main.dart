@@ -39,42 +39,43 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  bool _visible=true;
+  bool _visible = true;
   void _incrementCounter() {
     setState(() {
-      _visible=!_visible;
-
+      _visible = !_visible;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-
         title: Text(widget.title),
       ),
       body: Center(
-
         child: AnimatedVisibilityContainer(
             visible: _visible,
             aniDurMs: 1000,
-            aniChildBuilder: (context, ani){
-
-          return Transform(
-            alignment: Alignment.bottomCenter,
-            transform: Matrix4.identity()..setEntry(3,2, 0.001)..rotateX(-pi/2*(1-ani.value)),
-            child: Container(
-              alignment: Alignment.center,
-              color: Colors.indigoAccent,
-              width:  300,
-              height: 300,
-
-              child: Text('Sample of AnimatedVisibilityContainer',style: Theme.of(context).textTheme.title.copyWith(color: Colors.amberAccent),textAlign: TextAlign.center,),
-            ),
-          );
-        }),
+            aniChildBuilder: (context, ani) {
+              return Transform(
+                alignment: Alignment.bottomCenter,
+                transform: Matrix4.identity()
+                  ..setEntry(3, 2, 0.001)
+                  ..rotateX(-pi / 2 * (1 - ani.value)),
+                child: Container(
+                  alignment: Alignment.center,
+                  color: Colors.indigoAccent,
+                  width: 300,
+                  height: 300,
+                  child: Text('Sample of AnimatedVisibilityContainer',
+                      style: Theme.of(context)
+                          .textTheme
+                          .title
+                          .copyWith(color: Colors.amberAccent),
+                      textAlign: TextAlign.center)
+                ),
+              );
+            }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
