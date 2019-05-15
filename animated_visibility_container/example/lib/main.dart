@@ -56,24 +56,23 @@ class _MyHomePageState extends State<MyHomePage> {
         child: AnimatedVisibilityContainer(
             visible: _visible,
             aniDurMs: 1000,
-            aniChildBuilder: (context, ani) {
+            aniChildBuilder: (BuildContext context, Animation ani) {
               return Transform(
                 alignment: Alignment.bottomCenter,
                 transform: Matrix4.identity()
                   ..setEntry(3, 2, 0.001)
                   ..rotateX(-pi / 2 * (1 - ani.value)),
                 child: Container(
-                  alignment: Alignment.center,
-                  color: Colors.indigoAccent,
-                  width: 300,
-                  height: 300,
-                  child: Text('Sample of AnimatedVisibilityContainer',
-                      style: Theme.of(context)
-                          .textTheme
-                          .title
-                          .copyWith(color: Colors.amberAccent),
-                      textAlign: TextAlign.center)
-                ),
+                    alignment: Alignment.center,
+                    color: Colors.indigoAccent,
+                    width: 300,
+                    height: 300,
+                    child: Text('Sample of AnimatedVisibilityContainer',
+                        style: Theme.of(context)
+                            .textTheme
+                            .title
+                            .copyWith(color: Colors.amberAccent),
+                        textAlign: TextAlign.center)),
               );
             }),
       ),
