@@ -8,9 +8,6 @@ library animated_listview;
 import 'package:flutter/material.dart';
 
 
-void _dbgPrint(String message, {int wrapWidthParam}) {
-  assert((){debugPrint(message,wrapWidth:wrapWidthParam);return true;}());
-}
 
 typedef AnimatedItemBuilder = Widget Function(
     BuildContext context,
@@ -23,12 +20,12 @@ typedef AnimatedItemBuilder = Widget Function(
 class AnimatedListView extends StatefulWidget {
   AnimatedListView({
     Key key,
-    this.itemCount,
     @required this.aniItemBuilder,
     this.aniDurMs=1000,
     this.aniIntervalMs=33,
     this.aniCurve=Curves.easeOut,
-
+    this.itemCount,
+    this.scrollDirection= Axis.vertical,
   }):super(key:key);
 
   /// Animation Duration (-Ms: milliseconds)
@@ -43,6 +40,8 @@ class AnimatedListView extends StatefulWidget {
   /// Item count, see itemCount of [ListView.builder]
   final int itemCount;
 
+  /// See [ListView.scrollDirection]
+  final Axis scrollDirection;
 
   /// Create item widget callback, see [AnimatedItemBuilder]
   final AnimatedItemBuilder aniItemBuilder;
@@ -89,8 +88,9 @@ class _AnimatedListViewState extends State<AnimatedListView>
     lvBuildTime = DateTime.now();
     return Container(
       child: _listView = ListView.builder(
+        scrollDirection: widget.scrollDirection,
         itemBuilder: (BuildContext context, int index) {
-          _dbgPrint('build $index');
+          //_dbgPrint('build $index');
           if (DateTime.now().difference(lvBuildTime) >
               Duration(milliseconds: widget.aniDurMs)) firstShow = false;
           return LvAniItem(//PageStorageKey<T>(getItem(index)),
@@ -108,7 +108,7 @@ class LvAniItem extends StatefulWidget {
   LvAniItem(
       //this.key,
       this.idx, this.durMs, this.intvMs, this.aniCurve, this.lv,this.cbCreateItem){
-    _dbgPrint('LvItem Widget create $idx');
+    //_dbgPrint('LvItem Widget create $idx');
   }
 
   final AnimatedItemBuilder cbCreateItem;
@@ -134,7 +134,7 @@ class _LvAniItemState extends State<LvAniItem>
   bool firstShow = true;
   int buildCount = 0;
   _LvAniItemState(int idx){
-    _dbgPrint('LvItem State create $idx');
+   // _dbgPrint('LvItem State create $idx');
   }
   int _aniIdx;
 
@@ -191,4 +191,10 @@ class _LvAniItemState extends State<LvAniItem>
   }
 
 
+}
+
+
+///debug log
+void _dbgPrint(String message, {int wrapWidthParam}) {
+  assert((){debugPrint(message,wrapWidth:wrapWidthParam);return true;}());
 }

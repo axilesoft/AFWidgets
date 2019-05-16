@@ -153,9 +153,9 @@ class _MyHomePageState extends State<MyHomePage> {
         aniItemBuilder: animatedListViewBuilders[curALV % animatedListViewBuilders.length],
 
         itemCount: 100,
-        aniDurMs: 750,
-        aniIntervalMs: 33,
-        //aniCurve: Curves.easeOutBack,
+        aniDurMs: 1000,
+        aniIntervalMs: 50,
+        aniCurve: Curves.bounceOut,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
@@ -165,6 +165,9 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+
+
 
 class TestWidget extends StatefulWidget {
   final int id;
@@ -189,12 +192,17 @@ class _TestWidgetState extends State<TestWidget> {
   @override
   void initState() {
     super.initState();
-    dbgPrint('+ ${widget.id}');
+    _dbgPrint('+ ${widget.id}');
   }
 
   @override
   void dispose() {
-    dbgPrint('- ${widget.id}');
+    _dbgPrint('- ${widget.id}');
     super.dispose();
   }
+}
+
+///debug log
+void _dbgPrint(String message, {int wrapWidthParam}) {
+  assert((){debugPrint(message,wrapWidth:wrapWidthParam);return true;}());
 }
