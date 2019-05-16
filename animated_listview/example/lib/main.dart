@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     borderRadius: BorderRadius.circular(8)),
                 color:
                 HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
-                child: TestWidget(index),//Text(                   "ITEM ID=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
+                child: Text(                   "ITEM ID=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
                 onPressed: () {},
               ),
             ),
@@ -192,12 +192,12 @@ class _TestWidgetState extends State<TestWidget> {
   @override
   void initState() {
     super.initState();
-    _dbgPrint('+ ${widget.id}');
+    //_dbgPrint('+ ${widget.id}');
   }
 
   @override
   void dispose() {
-    _dbgPrint('- ${widget.id}');
+   // _dbgPrint('- ${widget.id}');
     super.dispose();
   }
 }
