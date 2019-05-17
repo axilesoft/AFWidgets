@@ -25,6 +25,7 @@ class AnimatedListView extends StatefulWidget {
     this.aniIntervalMs=33,
     this.aniCurve=Curves.easeOut,
     this.itemCount,
+    this.itemExtent,
     this.scrollDirection= Axis.vertical,
   }):super(key:key);
 
@@ -37,8 +38,9 @@ class AnimatedListView extends StatefulWidget {
   /// Animation Curve
   final Curve aniCurve;
 
-  /// Item count, see itemCount of [ListView.builder]
+  /// parameters pass to [ListView.builder]
   final int itemCount;
+  final double itemExtent;
 
   /// See [ListView.scrollDirection]
   final Axis scrollDirection;
@@ -59,7 +61,7 @@ class _AnimatedListViewState extends State<AnimatedListView>
   bool firstShow = true;  // first screen of items should show one by one with a delay.
   DateTime lvBuildTime;
   int aniId = 0;
-
+  double _offset=0;
 
   @override
   void initState() {
@@ -67,6 +69,7 @@ class _AnimatedListViewState extends State<AnimatedListView>
 
     sclCtlr = ScrollController()
       ..addListener(() {
+        _offset=sclCtlr.offset;
         //_dbgPrint('scroll pos=${_sclCtlr.offset/50} ofs=${_sclCtlr.offset}');
       });
 
@@ -87,7 +90,8 @@ class _AnimatedListViewState extends State<AnimatedListView>
     aniId = 0;
     lvBuildTime = DateTime.now();
     return Container(
-      child: _listView = ListView.builder(
+      child: _listView = ListView.builder(//key: PageStorageKey('styleListView1'),
+        itemExtent: widget.itemExtent,
         scrollDirection: widget.scrollDirection,
         itemBuilder: (BuildContext context, int index) {
           //_dbgPrint('build $index');
@@ -150,6 +154,7 @@ class _LvAniItemState extends State<LvAniItem>
 //      _dbgPrint('LvItem initState idx:${widget.idx}  $itemBeg->$itemEnd');
 //    }
 
+  // _dbgPrint('LvItem initState idx:${widget.idx}');
     _aniIdx = (widget.lv.aniId++).clamp(0, 32);
     delayMs = firstShow ? _aniIdx * widget.intvMs.toInt() : 0;
     var totalMs = widget.durMs  + delayMs.toInt();
