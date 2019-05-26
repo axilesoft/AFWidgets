@@ -26,7 +26,9 @@ class AnimatedListView extends StatefulWidget {
     this.aniCurve=Curves.easeOut,
     this.itemCount,
     this.itemExtent,
+    this.initOffsetByIndex,
     this.scrollDirection= Axis.vertical,
+
   }):super(key:key);
 
   /// Animation Duration (-Ms: milliseconds)
@@ -48,6 +50,8 @@ class AnimatedListView extends StatefulWidget {
   /// Create item widget callback, see [AnimatedItemBuilder]
   final AnimatedItemBuilder aniItemBuilder;
 
+  /// Initial offset by item index (when itemExtent!=null)
+  final int initOffsetByIndex;
 
   @override
   _AnimatedListViewState createState() =>  _AnimatedListViewState();
@@ -66,8 +70,11 @@ class _AnimatedListViewState extends State<AnimatedListView>
   @override
   void initState() {
     super.initState();
+    double offset=0.0;
+    if (widget.itemExtent!=null && widget.initOffsetByIndex!=null)
+      offset= widget.itemExtent*widget.initOffsetByIndex;
 
-    sclCtlr = ScrollController()
+    sclCtlr = ScrollController(initialScrollOffset: offset)
       ..addListener(() {
         _offset=sclCtlr.offset;
         //_dbgPrint('scroll pos=${_sclCtlr.offset/50} ofs=${_sclCtlr.offset}');
