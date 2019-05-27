@@ -35,19 +35,20 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  /// different animation types
   final animatedListViewBuilders = <AnimatedItemBuilder>[
-        (BuildContext context, int index,Animation ani) {
-      double aniValue=ani.value;
+    (BuildContext context, int index, Animation ani) {
+      double aniValue = ani.value;
       Size ss = MediaQuery.of(context).size;
-      double scl = 3- 2 * aniValue;
+      double scl = 3 - 2 * aniValue;
       double trx = (index % 2 * 2 - 1) * ss.width * 0.5 * (1.0 - aniValue);
 
       return Transform(
         transform: Matrix4.identity()
           ..setEntry(3, 2, 0.001) // perspective
 
-          ..translate(trx,0, 0)..scale(scl)
-        ,
+          ..translate(trx, 0, 0)
+          ..scale(scl),
         alignment: Alignment.center,
         child: Opacity(
           //key: PageStorageKey<MediaItem>(widget.entry),
@@ -60,12 +61,13 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 28,
               child: RaisedButton(
                 highlightColor:
-                HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.8).toColor(),
+                    HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.8).toColor(),
                 shape: BeveledRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
                 color:
-                HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
-                child: Text(                   "ITEM ID=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
+                    HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
+                child: Text(
+                    "ITEM ID=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
                 onPressed: () {},
               ),
             ),
@@ -73,13 +75,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     },
-
-        (BuildContext context, int index, Animation ani) {
-      double aniValue=ani.value;
+    (BuildContext context, int index, Animation ani) {
+      double aniValue = ani.value;
       Size ss = MediaQuery.of(context).size;
       double scl = 0 + 1 * aniValue;
-      double trl =  ss.width * 1 * (1.0 - aniValue);
-      double roY = radians(-90*(1.0-aniValue));
+      double trl = ss.width * 1 * (1.0 - aniValue);
+      double roY = radians(-90 * (1.0 - aniValue));
       return Transform(
         transform: Matrix4.identity()
           ..setEntry(3, 2, 0.001) // perspective
@@ -88,13 +89,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Container(
           height: 50,
           padding: EdgeInsets.all(2),
-
-
           child: RaisedButton(
             highlightColor:
-            HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.8).toColor(),
-            color:
-            HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
+                HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.8).toColor(),
+            color: HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
             child: Text(
                 "ITEM ID=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
             onPressed: () {},
@@ -102,9 +100,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     },
-
-        (BuildContext context, int index,Animation ani) {
-      double aniValue=ani.value;
+    (BuildContext context, int index, Animation ani) {
+      double aniValue = ani.value;
       Size ss = MediaQuery.of(context).size;
       double scl = 0 + 1 * aniValue;
       double trl = ss.width * 0.5 * (1.0 - aniValue);
@@ -115,14 +112,14 @@ class _MyHomePageState extends State<MyHomePage> {
           height: 50,
           padding: EdgeInsets.all(1),
           transform: Matrix4.translationValues(
-            trl,
-            0,
-            0, //(widget.idx%2 *2-1)*ss.width*5.5*(1.0-aniVal)
-          ) *
+                trl,
+                0,
+                0, //(widget.idx%2 *2-1)*ss.width*5.5*(1.0-aniVal)
+              ) *
               Matrix4.diagonal3Values(scl, scl, 1),
           child: RaisedButton(
             highlightColor:
-            HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.8).toColor(),
+                HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.8).toColor(),
             // color:                HSLColor.fromAHSL(1.0, index * 6.0 % 360, 1, 0.5).toColor(),
             child: Text(
                 "ITEM ID=$index"), //,AniIdx=$_aniIdx,DelayMs=$delayMs  |  ${widget.entry.title} "),
@@ -131,15 +128,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     },
-
-
-
-
-
   ];
 
   int curALV = 0;
-  List<int> li= List<int>.generate(1000,(index)=>index);
+  List<int> li = List<int>.generate(1000, (index) => index);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,8 +142,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: _alv = AnimatedListView(
         key: new ObjectKey(curALV),
-        aniItemBuilder: animatedListViewBuilders[curALV % animatedListViewBuilders.length],
-
+        aniItemBuilder:
+            animatedListViewBuilders[curALV % animatedListViewBuilders.length],
         itemCount: 100,
         aniDurMs: 1000,
         aniIntervalMs: 50,
@@ -166,22 +158,15 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-
-
-
 class TestWidget extends StatefulWidget {
   final int id;
   TestWidget(this.id);
 
   @override
-  _TestWidgetState createState() =>  _TestWidgetState();
-
-
+  _TestWidgetState createState() => _TestWidgetState();
 }
 
 class _TestWidgetState extends State<TestWidget> {
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -197,12 +182,15 @@ class _TestWidgetState extends State<TestWidget> {
 
   @override
   void dispose() {
-   // _dbgPrint('- ${widget.id}');
+    // _dbgPrint('- ${widget.id}');
     super.dispose();
   }
 }
 
 ///debug log
 void _dbgPrint(String message, {int wrapWidthParam}) {
-  assert((){debugPrint(message,wrapWidth:wrapWidthParam);return true;}());
+  assert(() {
+    debugPrint(message, wrapWidth: wrapWidthParam);
+    return true;
+  }());
 }
