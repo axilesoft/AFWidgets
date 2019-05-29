@@ -1,16 +1,16 @@
 # AFWidgets
 May be some cool Flutter Widgets
 
-- Demo video  
+- Demo video 
 https://youtu.be/ObO717alGco
 - Used by App  
 https://play.google.com/store/apps/details?id=com.axilesoft.axtouchfirework
 
-# Widget List
+# Widgets List
 
 - ## [AnimatedListView](./animated_listview)
 
-Demo video 
+Widget demo video 
 https://youtu.be/eLW_N7No3og
 
 
